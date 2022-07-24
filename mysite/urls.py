@@ -15,11 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.shortcuts import render
-from django.urls import path, include
+from django.urls import path, include,re_path
 from rest_framework import permissions
 #Libraries for api scheme interface
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.static import serve
 
 
 urlpatterns = [
@@ -48,3 +52,8 @@ urlpatterns += [
                 path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
                 path('', home), path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc')
             ]
+
+
+#Static root 
+urlpatterns += [re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT})]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
