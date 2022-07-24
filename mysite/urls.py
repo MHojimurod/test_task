@@ -15,32 +15,36 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.shortcuts import render
-from django.urls import path,include
+from django.urls import path, include
 from rest_framework import permissions
+#Libraries for api scheme interface
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path("", include("myapp.urls")),
+
+]
+
+#API scheme  interface
 schema_view = get_schema_view(
-   openapi.Info(
-      title="Uzbek Compass API Sxema",
-      default_version='v1',
-      description="API TESTING",
-      terms_of_service="https://www.uzbek-compass.uz/policies/terms/",
-      contact=openapi.Contact(email="islom.abdullaev02@mail.ru"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=[permissions.AllowAny],
+    openapi.Info(
+        title="Test Task API Scheme",
+        default_version='v1',
+        description="API TESTING",
+    ),
+    public=True,
+    permission_classes=[permissions.AllowAny],
 )
+
 
 def home(request):
     return render(request, 'index.html')
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("",include("myapp.urls")),
-    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('', home),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-]
+urlpatterns += [
+                path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+                path('', home), path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc')
+            ]
