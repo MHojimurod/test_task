@@ -29,6 +29,8 @@ from django.views.static import serve
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("myapp.urls")),
+    # re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
+    # static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 ]
 
@@ -54,6 +56,5 @@ urlpatterns += [
             ]
 
 
-#Static root 
 urlpatterns += [re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT})]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
